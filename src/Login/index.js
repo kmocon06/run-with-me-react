@@ -54,7 +54,7 @@ class Login extends Component {
 					<Label>Password:</Label>
 					<Form.Input
 						inline
-						type="text"
+						type="password"
 						name="password"
 						placeholder="Enter a Password"
 						required

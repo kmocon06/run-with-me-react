@@ -1,19 +1,25 @@
 import React, { Component } from 'react'
+import { List } from 'semantic-ui-react'
 
-
-class RaceList extends Component {
-	constructor(props) {
-		super(props)
-
-	}
-
-	render() {
-		return(
-			<div className="RaceList">
-			<h1>All the Races</h1>
+function RaceList(props) {
+	const races = props.races.map((race) => {
+		return (
+			<div>
+				<List key={race.id}>
+					<List.Item> 
+						<h1>{race.name}</h1>
+					</List.Item>
+				</List>
 			</div>
 		)
-	}
+	})
+
+	return (
+		<ul>
+			{races}
+		</ul>
+
+	)
 }
 
 

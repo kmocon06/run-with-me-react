@@ -9,7 +9,8 @@ import {
 } from 'react-router-dom'
 import Register from './Register'
 import Login from './Login'
-import RaceList from './RaceList'
+import RaceContainer from './RaceContainer'
+import { Message } from 'semantic-ui-react'
 
 class App extends Component {
   constructor(props){
@@ -17,7 +18,8 @@ class App extends Component {
 
     this.state = {
       loggedIn: false,
-      loggedInUserEmail: null
+      loggedInUserEmail: null,
+      message: ''
     }
   }
 
@@ -35,6 +37,20 @@ class App extends Component {
         }
       })
       const registerJson = await registerResponse.json()
+
+      //if the registerResponse is 201,
+      //then we need to change the state
+      if(registerResponse.status === 201) {
+        this.setState({
+          loggedIn: true,
+          loggedInUsername: registerJson.data.email,
+          message: ''
+        })
+      } else {
+        this.setState({
+          message: 'A user with that email already exists'
+        })
+      }
 
     } catch (err) {
         console.error(err)
@@ -55,8 +71,19 @@ class App extends Component {
         }
       })
       const loginJson = await loginResponse.json()
-      console.log(loginResponse)
-      console.log(loginJson)
+
+      //if the loginResponse is 200,
+      //then we need to change the state
+      if(loginResponse.status === 200) {
+        this.setState({
+          loggedIn: true,
+          loggedInUserEmail: loginJson.data.email
+        })
+      } else {
+        this.setState({
+          message: 'Invalid username or password'
+        })
+      }
 
     } catch (err) {
         console.error(err)
@@ -66,7 +93,6 @@ class App extends Component {
 
   render() {
 
-    console.log(process.env)
     return (
       <div className="App">
       <h1>Running App</h1>
@@ -75,7 +101,7 @@ class App extends Component {
          { 
           this.state.loggedIn 
           ? 
-          <RaceList /> 
+          <RaceContainer /> 
           : 
           <Route path='/register'>
             <Register 
