@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 const sizes = ["small"]
 
 
-class Register extends Component {
+class Login extends Component {
 	constructor(props) {
 		super(props)
 
@@ -63,4 +63,4 @@ class Register extends Component {
 
 
 
-export default Register
+export default Login
