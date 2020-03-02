@@ -1,15 +1,23 @@
 import React, { Component } from 'react'
-import { Form, Label, Button } from 'semantic-ui-react'
+import { Form, Label, Button, Grid, Message } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
-const sizes = ['large']
+const sizes = ["small"]
 
-class LoginRegisterForm extends Component {
+const genderOptions = [
+  { key: 'm', text: 'Male', value: 'male' },
+  { key: 'f', text: 'Female', value: 'female' },
+  { key: 'o', text: 'Other', value: 'other' },
+]
+
+class Register extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
 			name: '',
 			age: null,
+			gender: '',
 			hometown: '',
 			email: '',
 			password: ''
@@ -18,9 +26,12 @@ class LoginRegisterForm extends Component {
 
 	render() {
 		return(
-			<div className="LoginRegisterForm">
+			<div className="LoginRegister">
+
 			{sizes.map((size) => (
-				<Form size={size} key={size}>
+				<Grid textAlign="center">
+				<Grid.Column style={{maxWidth: 450}}>
+				<Form size={sizes} key={sizes}>
 					<Form.Field>
 					<Label>Name:</Label>
 					<Form.Input
@@ -40,6 +51,14 @@ class LoginRegisterForm extends Component {
 						placeholder="Enter Your Age"
 						required
 					/>
+					</Form.Field>
+					<Form.Field>
+					<Form.Select
+            			fluid
+            			label='Gender'
+            			options={genderOptions}
+            			placeholder='Gender'
+          			/>
 					</Form.Field>
 					<Form.Field>
 					<Label>Hometown:</Label>
@@ -72,7 +91,12 @@ class LoginRegisterForm extends Component {
 					/>
 					</Form.Field>
 					<Button type="Submit">Register</Button>
+					<Message>
+                        Already have an account? Login <Link to='/login'>here</Link>
+                     </Message>
 				</Form>
+				</Grid.Column>
+				</Grid>
 			))}
 			</div>
 		)
@@ -86,4 +110,4 @@ class LoginRegisterForm extends Component {
 
 
 
-export default LoginRegisterForm
+export default Register

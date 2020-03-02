@@ -1,6 +1,14 @@
 import React, { Component } from 'react'
 import './App.css'
-import LoginRegisterForm from './LoginRegisterForm'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams
+} from 'react-router-dom'
+import Register from './Register'
+import Login from './Login'
 
 class App extends Component {
   constructor(props){
@@ -15,9 +23,17 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>New React App</h1>
-        <LoginRegisterForm />
-      </div>
+      <Router>
+        <Switch>
+          <Route path='/register'>
+            <Register />
+          </Route>
+          <Route path='/'>
+            <Login />
+          </Route>
+      </Switch>
+    </Router>
+    </div>
     );
   }
 }
