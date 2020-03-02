@@ -23,7 +23,6 @@ class App extends Component {
 
   //register
   register = async (data) => {
-    console.log("register() in App.js called with the following info", data)
     const registerUrl = process.env.REACT_APP_API_URL + '/api/v1/auth/register'
 
     try {
@@ -35,9 +34,7 @@ class App extends Component {
           'Content-Type': 'application/json'
         }
       })
-      console.log(registerResponse);
       const registerJson = await registerResponse.json()
-      console.log(registerJson);
 
     } catch (err) {
         console.error(err)
@@ -46,7 +43,25 @@ class App extends Component {
 
   //login
   login = async (data) => {
-    console.log("login() in App.js called with the following info", data)
+    const loginUrl = process.env.REACT_APP_API_URL + '/api/v1/auth/login'
+
+    try {
+      const loginResponse = await fetch(loginUrl, {
+        credentials: 'include',
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      const loginJson = await loginResponse.json()
+      console.log(loginResponse)
+      console.log(loginJson)
+
+    } catch (err) {
+        console.error(err)
+    }
+
   }
 
   render() {

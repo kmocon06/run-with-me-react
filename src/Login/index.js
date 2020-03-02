@@ -15,6 +15,21 @@ class Login extends Component {
 		}
 	}
 
+	handleLoginChange = (event) => {
+    	this.setState({
+      		[event.target.name]: event.target.value
+    	})
+  	}
+
+  	handleLoginSubmit = (event) => {
+    	event.preventDefault()
+    	this.loginUser()
+  	}
+
+  	loginUser = () => {
+  		this.props.login(this.state)
+  	}
+
 	render() {
 		return(
 			<div className="LoginRegister">
@@ -22,7 +37,7 @@ class Login extends Component {
 			{sizes.map((size) => (
 				<Grid textAlign="center">
 				<Grid.Column style={{maxWidth: 450}}>
-				<Form size={sizes} key={sizes}>
+				<Form onSubmit={this.handleLoginSubmit} size={sizes} key={sizes}>
 					<Form.Field>
 					<Label>Email:</Label>
 					<Form.Input
@@ -31,6 +46,8 @@ class Login extends Component {
 						name="email"
 						placeholder="Enter Your Email"
 						required
+						value={this.state.email}
+						onChange={this.handleLoginChange}
 					/>
 					</Form.Field>
 					<Form.Field>
@@ -41,6 +58,8 @@ class Login extends Component {
 						name="password"
 						placeholder="Enter a Password"
 						required
+						value={this.state.password}
+						onChange={this.handleLoginChange}
 					/>
 					</Form.Field>
 					<Button type="Submit">Login</Button>
