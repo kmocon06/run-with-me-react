@@ -10,7 +10,7 @@ import {
 import Register from './Register'
 import Login from './Login'
 import RaceContainer from './RaceContainer'
-import { Message } from 'semantic-ui-react'
+import { Message, Button } from 'semantic-ui-react'
 
 class App extends Component {
   constructor(props){
@@ -43,7 +43,7 @@ class App extends Component {
       if(registerResponse.status === 201) {
         this.setState({
           loggedIn: true,
-          loggedInUsername: registerJson.data.email,
+          loggedInUserEmail: registerJson.data.email,
           message: ''
         })
       } else {
@@ -81,7 +81,7 @@ class App extends Component {
         })
       } else {
         this.setState({
-          message: 'Invalid username or password'
+          message: 'Invalid email or password'
         })
       }
 
@@ -90,6 +90,35 @@ class App extends Component {
     }
   }
 
+  logout = async () => {
+
+    const logoutUrl = process.env.REACT_APP_API_URL + '/api/v1/auth/logout' 
+
+    try {
+      const logoutResponse = await fetch(logoutUrl, {
+        credentials: 'include',
+        method: 'GET',
+        body: JSON.stringify(),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+
+      const logoutJson = await logoutResponse.json()
+
+
+      if(logoutResponse.status === 200) {
+        this.setState({
+          loggedIn: false,
+          loggedInEmail: null,
+          message: ''
+        })
+      } 
+
+    } catch (err) {
+        console.error(err)
+    }
+  }
 
   render() {
 
@@ -101,7 +130,12 @@ class App extends Component {
          { 
           this.state.loggedIn 
           ? 
+          <div>
+          <nav>
+            <Button onClick={this.logout}>Logout</Button>
+          </nav>
           <RaceContainer /> 
+          </div>
           : 
           <Route path='/register'>
             <Register 
