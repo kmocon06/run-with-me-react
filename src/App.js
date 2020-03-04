@@ -13,7 +13,7 @@ import {
 import Register from './Register'
 import Login from './Login'
 import RaceContainer from './RaceContainer'
-import RaceIndex from './RaceIndex'
+//import RaceIndex from '../RaceIndex.js'
 import { Message, Button } from 'semantic-ui-react'
 
 class App extends Component {
@@ -151,8 +151,18 @@ class App extends Component {
           </Route>
 
           <Route path='/register'>
-            <Register register={this.register} />
-          </Route>
+             { 
+              this.state.loggedIn 
+              ? 
+              <Redirect 
+                to={{
+                  pathname: '/'
+                }}
+              />
+              : 
+              <Register register={this.register} />
+            }
+            </Route>
 
           <Route path='/'>
             { 

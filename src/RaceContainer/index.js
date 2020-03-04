@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import RaceList from '../RaceList'
-import NewRaceForm from '../NewRaceForm'
-import RaceIndex from '../RaceIndex'
+import RaceList from './RaceList'
+import NewRaceForm from './NewRaceForm'
+import RaceIndex from './RaceIndex'
 import { Button } from 'semantic-ui-react'
 import WorkoutContainer from '../WorkoutContainer'
 import {

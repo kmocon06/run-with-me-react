@@ -12,6 +12,7 @@ function WorkoutList(props) {
           							<Table.Cell>{workout.dayOfTheWeek}</Table.Cell>
                         <Table.Cell>{workout.duration}</Table.Cell>
                         <Table.Cell>{workout.distance}</Table.Cell>
+                        <button onClick={() => props.deleteWorkout(workout.id)}>Delete</button>
         							</Table.Row>
           )
     })
@@ -26,8 +27,8 @@ function WorkoutList(props) {
         							<Table.HeaderCell>Training For</Table.HeaderCell>
         							<Table.HeaderCell>Week #</Table.HeaderCell>
                       <Table.HeaderCell>Day of the Week</Table.HeaderCell>
-        							<Table.HeaderCell>Date</Table.HeaderCell>
-        							<Table.HeaderCell>Location</Table.HeaderCell>
+                      <Table.HeaderCell>Duration</Table.HeaderCell>
+        							<Table.HeaderCell>Distance</Table.HeaderCell>
       							</Table.Row>
     						</Table.Header>
 

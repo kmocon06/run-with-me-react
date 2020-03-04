@@ -13,6 +13,7 @@ class WorkoutContainer extends Component {
 			userWorkouts: [],
 			loggedInUserId: this.props.loggedInUserId,
 			newWorkoutModalOpen: false,	
+			indexOfWorkout: -1
 		}
 	}
 
@@ -36,8 +37,6 @@ class WorkoutContainer extends Component {
         		}
 			})
 
-			console.log(allWorkoutsResponse);
-
 			const allWorkoutsJson = await allWorkoutsResponse.json()
 
 			if(allWorkoutsResponse.status === 200) {
@@ -46,8 +45,6 @@ class WorkoutContainer extends Component {
         			userWorkouts: allWorkoutsJson.data
         		})
       		} 
-
-      		console.log(allWorkoutsJson);
 
 		} catch(err) {
 			console.log(err)
@@ -95,6 +92,47 @@ class WorkoutContainer extends Component {
 		})
 	}
 
+	//DESTROY your workout
+  	//DELETE /id
+	deleteWorkout = async (id) => {
+   		try {
+
+   			console.log('this should be the workout id');
+   			console.log(id);
+
+      		const deleteWorkoutResponse = await fetch(process.env.REACT_APP_API_URL + "/api/v1/workouts/" + id, {
+        		credentials: 'include',
+        		method: 'DELETE'
+      		})
+
+      		const deleteWorkoutJson = await deleteWorkoutResponse.json()
+
+      		if(deleteWorkoutJson.status === 200) {
+	    		const userWorkouts = this.state.userWorkouts
+	      		let indexOfWorkout = 0
+
+	    		for(let i = 0; i < userWorkouts.length; i++) {
+
+	      			if(userWorkouts[i].id === id) {
+	        			indexOfWorkout = i
+	      			}
+	      		}
+
+	      		//remove workout from array
+	    		userWorkouts.splice(indexOfWorkout, 1)
+
+	      		this.setState({ 
+	      			userWorkouts: userWorkouts
+	      		})
+               
+      		} else {
+        		throw new Error("Unable to delete this workout")
+      		}
+
+    	} catch(err) {
+      		console.error(err)
+    	}
+	}
 
 	render() {
 
@@ -107,7 +145,9 @@ class WorkoutContainer extends Component {
 			<NewWorkout createWorkout={this.createWorkout}
 				newWorkoutModalOpen={this.state.newWorkoutModalOpen}
 				closeNewWorkout={this.closeNewWorkout} />
-			<WorkoutList userWorkouts={this.state.userWorkouts} />
+			<WorkoutList userWorkouts={this.state.userWorkouts} 
+				deleteWorkout={this.deleteWorkout}
+			/>
 			</div>
 		)
 	}
