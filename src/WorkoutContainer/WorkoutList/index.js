@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 function WorkoutList(props) {
 
   	const userWorkouts = props.userWorkouts.map((workout) => {
+
         return(   
         							<Table.Row key={workout.id}>
           							<Table.Cell>{workout.trainingFor}</Table.Cell>
@@ -12,7 +13,7 @@ function WorkoutList(props) {
           							<Table.Cell>{workout.dayOfTheWeek}</Table.Cell>
                         <Table.Cell>{workout.duration}</Table.Cell>
                         <Table.Cell>{workout.distance}</Table.Cell>
-                        <button onClick={() => props.deleteWorkout(workout.id)}>Delete</button>
+                        <button onClick={() => props.deleteWorkout(workout._id)}>Delete</button>
         							</Table.Row>
           )
     })
