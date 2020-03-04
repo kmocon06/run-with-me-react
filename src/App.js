@@ -23,6 +23,7 @@ class App extends Component {
     this.state = {
       loggedIn: false,
       loggedInUserEmail: null,
+      loggedInUserId: null,
       message: ''
     }
   }
@@ -48,6 +49,7 @@ class App extends Component {
         this.setState({
           loggedIn: true,
           loggedInUserEmail: registerJson.data.email,
+          loggedInUserId: registerJson.data._id,
           message: ''
         })
       } else {
@@ -83,7 +85,8 @@ class App extends Component {
       if(loginResponse.status === 200) {
         this.setState({
           loggedIn: true,
-          loggedInUserEmail: loginJson.data.email
+          loggedInUserEmail: loginJson.data.email,
+          loggedInUserId: loginJson.data._id
         })
       } else {
         this.setState({
@@ -120,6 +123,7 @@ class App extends Component {
         this.setState({
           loggedIn: false,
           loggedInEmail: null,
+          loggedInUserId: null,
           message: ''
         })
       } 
@@ -154,7 +158,7 @@ class App extends Component {
             { 
               this.state.loggedIn 
               ? 
-              <RaceContainer logout={this.logout} /> 
+              <RaceContainer logout={this.logout} loggedInUserId={this.state.loggedInUserId}/> 
               : 
               <Redirect 
                 to={{

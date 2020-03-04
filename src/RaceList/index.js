@@ -4,6 +4,7 @@ import RaceIndex from '../RaceIndex'
 import { Link } from 'react-router-dom'
 
 function RaceList(props) {
+
 	const races = props.races.map((race) => {
 		return (
 			<div>
@@ -38,7 +39,6 @@ function RaceList(props) {
 		<ul>
 			{races}
 		</ul>
-
 	)
 }
 

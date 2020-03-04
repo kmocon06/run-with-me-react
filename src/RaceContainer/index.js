@@ -21,7 +21,9 @@ class RaceContainer extends Component {
 		this.state = {
 			races: [],
 			newFormOpen: false,
-			idOfRace: -1,
+			indexOfRace: 0,
+			trainingOpen: false,
+			loggedInUserId: this.props.loggedInUserId,
 		}
 
 	}
@@ -61,7 +63,7 @@ class RaceContainer extends Component {
 	//get once race with the id
 	findOneRace = async (raceId) => {
 		try {
-			const oneRaceResponse = await fetch(process.env.REACT_APP_API_URL + '/api/v1/races' + raceId, {
+			const oneRaceResponse = await fetch(process.env.REACT_APP_API_URL + '/api/v1/races/' + raceId, {
 				credentials: 'include',
 				method: 'GET',
     			body: JSON.stringify(raceId), 
@@ -70,11 +72,30 @@ class RaceContainer extends Component {
         		}
 			})
 
+			console.log('this is oneRaceResponse')
+			console.log(oneRaceResponse)
 			const oneRaceJson = await oneRaceResponse.json()
 
-			this.setState({
-				idOfRace: oneRaceJson.data
-			})
+			if(oneRaceJson.status === 200) {
+	    		const races = this.state.races
+	      		let indexOfRace = 0
+
+	    		for(let i = 0; i < races.length; i++) {
+
+	      			if(races[i]._id === raceId) {
+	        			indexOfRace = i
+	      			}
+
+					this.setState({
+						indexOfRace: indexOfRace
+					})
+	      		}
+	      	}
+
+				console.log('this is oneRaceJson');
+				console.log(oneRaceJson)
+				console.log(raceId);
+
 
 		} catch(err) {
 			console.log(err)
@@ -130,23 +151,35 @@ class RaceContainer extends Component {
 		})
 	}
 
+	openTraining = () => {
+		this.setState({
+			trainingOpen: true
+		})
+	}
+
 
 	render() {
 		const { path, url } = this.props.match;
 
 		console.log(this.state.races);
+		//console.log(this.state.trainingOpen);
+		console.log(this.state);
 		
 
 		return(
 			<div className="RaceContainer">
 			    <Button onClick={this.props.logout}>Logout</Button>
 				<Button className="NewButton" onClick={this.newRaceFormOpen}>Add a Race</Button>
-				<Button className="TrainingButton">Training</Button>
-
+				<Button className="TrainingButton" onClick={this.openTraining}>Training</Button>
+				{
+					this.state.trainingOpen
+					?
+					<WorkoutContainer loggedInUserId={this.state.loggedInUserId}/>
+					:
 			<Switch>
 
 				<Route path={`/:id`}>
-		            <RaceIndex findOneRace={this.findOneRace} idOfRace={this.state.idOfRace} />
+		            <RaceIndex races={this.state.races} idOfRace={this.state.idOfRace} />
 		        </Route>
 
 				<Route path={path}>
@@ -160,6 +193,7 @@ class RaceContainer extends Component {
 
 
 			</Switch>
+				}
 
 
 			</div>
