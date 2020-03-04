@@ -5,11 +5,15 @@ import {
   Switch,
   Route,
   Link,
-  useParams
+  useParams,
+  useRouteMatch,
+  Redirect,
+  withRouter
 } from 'react-router-dom'
 import Register from './Register'
 import Login from './Login'
 import RaceContainer from './RaceContainer'
+import RaceIndex from './RaceIndex'
 import { Message, Button } from 'semantic-ui-react'
 
 class App extends Component {
@@ -59,6 +63,7 @@ class App extends Component {
 
   //login
   login = async (data) => {
+    console.log("login was called");
     const loginUrl = process.env.REACT_APP_API_URL + '/api/v1/auth/login'
 
     try {
@@ -74,6 +79,7 @@ class App extends Component {
 
       //if the loginResponse is 200,
       //then we need to change the state
+
       if(loginResponse.status === 200) {
         this.setState({
           loggedIn: true,
@@ -84,12 +90,15 @@ class App extends Component {
           message: 'Invalid email or password'
         })
       }
+      //this is redirecting the page path
+      this.props.history.push("/");
 
     } catch (err) {
         console.error(err)
     }
   }
 
+  //logout
   logout = async () => {
 
     const logoutUrl = process.env.REACT_APP_API_URL + '/api/v1/auth/logout' 
@@ -120,39 +129,47 @@ class App extends Component {
     }
   }
 
+
+
   render() {
+
+    console.log("state in render method in app.js >> ", this.state);
 
     return (
       <div className="App">
       <h1>Running App</h1>
-      <Router>
+      
+
         <Switch>
-         { 
-          this.state.loggedIn 
-          ? 
-          <div>
-          <nav>
-            <Button onClick={this.logout}>Logout</Button>
-          </nav>
-          <RaceContainer /> 
-          </div>
-          : 
+
+          <Route path='/login'>
+                <Login login={this.login} />
+          </Route>
+
           <Route path='/register'>
-            <Register 
-              register={this.register}
-            />
+            <Register register={this.register} />
           </Route>
-        }
+
           <Route path='/'>
-            <Login 
-              login={this.login}
-            />
+            { 
+              this.state.loggedIn 
+              ? 
+              <RaceContainer logout={this.logout} /> 
+              : 
+              <Redirect 
+                to={{
+                  pathname: '/login'
+                }}
+              />
+            }
           </Route>
-      </Switch>
-    </Router>
+
+        </Switch>
+
+      
     </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);

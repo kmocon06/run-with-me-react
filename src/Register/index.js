@@ -122,7 +122,7 @@ class Register extends Component {
 					</Form.Field>
 					<Button type="Submit">Register</Button>
 					<Message>
-                        Already have an account? Login <Link to='/login'>here</Link>
+                        Already have an account? Login <Link to='/'>here</Link>
                      </Message>
 				</Form>
 				</Grid.Column>
