@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button } from 'semantic-ui-react'
 import WorkoutList from './WorkoutList'
+import NewWorkout from './NewWorkout'
 
 
 
@@ -10,7 +11,8 @@ class WorkoutContainer extends Component {
 
 		this.state = {
 			userWorkouts: [],
-			loggedInUserId: this.props.loggedInUserId	
+			loggedInUserId: this.props.loggedInUserId,
+			newWorkoutModalOpen: false,	
 		}
 	}
 
@@ -19,10 +21,10 @@ class WorkoutContainer extends Component {
 	}
 
 	//get all workouts for user 
+	//GET /:userId/workouts
 	findUserWorkouts = async (data) => {
 
 		const currentUser = this.state.loggedInUserId
-		console.log(process.env.REACT_APP_API_URL + '/api/v1/' + this.props.loggedInUserId + '/workouts');
 
 		try {
 			const allWorkoutsResponse = await fetch(process.env.REACT_APP_API_URL + '/api/v1/' + this.props.loggedInUserId + '/workouts', {
@@ -52,6 +54,48 @@ class WorkoutContainer extends Component {
 		}
 	}
 
+	//CREATE 
+	//POST workouts/new
+	createWorkout = async (newWorkout) => {
+		try {
+			const newWorkoutResponse = await fetch(process.env.REACT_APP_API_URL + '/api/v1/workouts/new', {
+				credentials: 'include', 
+				method: 'POST',
+    			body: JSON.stringify(newWorkout), 
+    			headers: {
+        			'Content-Type': 'application/json'
+        		}
+			})
+
+			const newWorkoutJson = await newWorkoutResponse.json()
+
+      		if(newWorkoutResponse.status === 201) {
+        		this.setState({
+          			userWorkouts: [...this.state.userWorkouts, newWorkoutJson.data]
+       			})
+
+            this.closeNewWorkout()
+
+      		}
+
+		} catch(err) {
+			console.log(err)
+		}
+	}
+
+	openNewWorkout = () => {
+		this.setState({
+			newWorkoutModalOpen: true
+		})
+	}
+
+	closeNewWorkout = () => {
+		this.setState({
+			newWorkoutModalOpen: false
+		})
+	}
+
+
 	render() {
 
 		console.log(this.state);
@@ -59,7 +103,10 @@ class WorkoutContainer extends Component {
 		return (
 			<div className="WorkoutContainer">
 				<h1>WorkoutContainer</h1>
-			<Button className="NewButton" >Add a new Workout</Button>
+			<Button className="NewButton" onClick={this.openNewWorkout}>Add a new Workout</Button>
+			<NewWorkout createWorkout={this.createWorkout}
+				newWorkoutModalOpen={this.state.newWorkoutModalOpen}
+				closeNewWorkout={this.closeNewWorkout} />
 			<WorkoutList userWorkouts={this.state.userWorkouts} />
 			</div>
 		)
