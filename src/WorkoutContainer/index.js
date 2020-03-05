@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Button } from 'semantic-ui-react'
 import WorkoutList from './WorkoutList'
 import NewWorkout from './NewWorkout'
+import EditWorkout from './EditWorkout'
 
 
 
@@ -13,7 +14,7 @@ class WorkoutContainer extends Component {
 			userWorkouts: [],
 			loggedInUserId: this.props.loggedInUserId,
 			newWorkoutModalOpen: false,	
-			indexOfWorkout: -1
+			idOfWorkout: -1
 		}
 	}
 
@@ -92,6 +93,22 @@ class WorkoutContainer extends Component {
 		})
 	}
 
+	closeEditModal = () => {
+		this.setState({
+			idOfWorkout: -1
+		})
+	}
+
+	//EDIT workout
+	//GET /id
+	//need the id of workout we want to edit
+	editWorkout = (idOfWorkout) => {
+
+    	this.setState({
+      		idOfWorkout: idOfWorkout
+    	})
+  	}
+
 	//DESTROY your workout
   	//DELETE /id
 	deleteWorkout = async (id) => {
@@ -137,6 +154,7 @@ class WorkoutContainer extends Component {
 	render() {
 
 		console.log(this.state);
+		console.log(this.state.idOfWorkout);
 
 		return (
 			<div className="WorkoutContainer">
@@ -146,8 +164,20 @@ class WorkoutContainer extends Component {
 				newWorkoutModalOpen={this.state.newWorkoutModalOpen}
 				closeNewWorkout={this.closeNewWorkout} />
 			<WorkoutList userWorkouts={this.state.userWorkouts} 
+				workoutToEdit={this.state.userWorkouts.find((workout) => workout._id === this.state.idOfWorkout)}
 				deleteWorkout={this.deleteWorkout}
+				editWorkout={this.editWorkout}
 			/>
+			 {
+          		this.state.idOfWorkout !== -1 
+          		? 
+          		<EditWorkout
+          			workoutToEdit={this.state.userWorkouts.find((workout) => workout._id === this.state.idOfWorkout)}
+                	closeEditModal={this.closeEditModal}
+          		/>
+          		:
+          		null
+        	 }
 			</div>
 		)
 	}

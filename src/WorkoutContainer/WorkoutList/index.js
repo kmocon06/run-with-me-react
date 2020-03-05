@@ -13,6 +13,7 @@ function WorkoutList(props) {
           							<Table.Cell>{workout.dayOfTheWeek}</Table.Cell>
                         <Table.Cell>{workout.duration}</Table.Cell>
                         <Table.Cell>{workout.distance}</Table.Cell>
+                        <button onClick={() => props.editWorkout(workout._id)}>Edit</button>
                         <button onClick={() => props.deleteWorkout(workout._id)}>Delete</button>
         							</Table.Row>
           )

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
 
 
-class NewWorkout extends Component {
+class EditWorkout extends Component {
 
 	constructor(props) {
 		super(props)
@@ -17,26 +17,26 @@ class NewWorkout extends Component {
     	}
   	}
 
-  	handleNewWorkoutChange = (event) => {
+  	componentDidMount() {
+  		this.setState({
+  			trainingFor: this.props.workoutToEdit.trainingFor,
+  			weekNumber: this.props.workoutToEdit.weekNumber,
+  			dayOfTheWeek: this.props.workoutToEdit.dayOfTheWeek,
+  			duration: this.props.workoutToEdit.duration,
+  			distance: this.props.workoutToEdit.distance
+  		})
+  	}
+
+  	handleEditWorkoutChange = (event) => {
     	this.setState({
       		[event.target.name]: event.target.value
     	})
   	}
 
-  	handleNewWorkoutSubmit = (event) => {
+  	handleEditWorkoutSubmit = (event) => {
     	event.preventDefault()
 
-    	this.props.createWorkout(this.state)
-
-    	//reset the state of the workout after form is submitted
-    	this.setState({
-       		trainingFor: '',
-			weekNumber: null,
-			dayOfTheWeek: '',
-			duration: '',
-			distance: '',
-			workoutCompleted: false,
-    	})
+    	this.props.editWorkout(this.state)
   	}
 
 
@@ -44,49 +44,49 @@ class NewWorkout extends Component {
 
 	    return(
 	    	<div>
-	    	<Modal open={this.props.newWorkoutModalOpen} closeIcon={true} onClose={this.props.closeNewWorkout}>
+	    	<Modal open={true} onClose={(e)=>{this.props.closeEditModal()}} closeIcon>
 	    		<Modal.Content>
 	    			<Header>
-	    				<h4>Add a new workout:</h4>
+	    				<h4>Edit workout:</h4>
 	        		</Header>
-	    				<Form onSubmit={this.handleNewWorkoutSubmit}>
+	    				<Form onSubmit={this.handleEditWorkoutSubmit}>
 	        				<p>Training For:</p>
 			        		<Form.Input 
 			            		type="text"
 			            		name="trainingFor"
 			            		value={this.state.trainingFor}
-			            		onChange={this.handleNewWorkoutChange}
+			            		onChange={this.handleEditWorkoutChange}
 			          		/>
 			          		<p>Week #:</p>
 			          		<Form.Input
 			            		type="text"
 			            		name="weekNumber"
 			            		value={this.state.weekNumber}
-			            		onChange={this.handleNewWorkoutChange}
+			            		onChange={this.handleEditWorkoutChange}
 			          		/>         
 			          		<p>Day of the Week + Date: (ex. Fri 3/7/20)</p>
 			          		<Form.Input 
 			            		type="text"
 			            		name="dayOfTheWeek"
 			            		value={this.state.dayOfTheWeek}
-			            		onChange={this.handleNewWorkoutChange}
+			            		onChange={this.handleEditWorkoutChange}
 			          		/>
 			          		<p>Duration + Type of Workout: (ex. 20 min run)</p>
 			          		<Form.Input 
 			            		type="text"
 			            		name="duration"
 			            		value={this.state.duration}
-			            		onChange={this.handleNewWorkoutChange}
+			            		onChange={this.handleEditWorkoutChange}
 			          		/>
 			          		<p>Distance:</p>
 			          		<Form.Input 
 			            		type="text"
 			            		name="distance"
 			            		value={this.state.distance}
-			            		onChange={this.handleNewWorkoutChange}
+			            		onChange={this.handleEditWorkoutChange}
 			          		/>
 			          		<Modal.Actions>
-			          			<Button type="Submit">Add a Workout</Button>
+			          			<Button type="Submit">Edit Workout</Button>
 			          		</Modal.Actions>
 			        	</Form>
 	        	</Modal.Content>
@@ -97,4 +97,4 @@ class NewWorkout extends Component {
 }
 
 
-export default NewWorkout
+export default EditWorkout
