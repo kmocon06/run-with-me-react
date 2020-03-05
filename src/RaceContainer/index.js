@@ -41,7 +41,7 @@ class RaceContainer extends Component {
 		// 	match:match
 		// })
 		this.findRaces()
-		this.updateRace()
+		// this.updateRace()
 	}
 
 	findRaces = async () => {
@@ -67,6 +67,8 @@ class RaceContainer extends Component {
 	//get once race with the id
 	findOneRace = async (raceId) => {
 		try {
+
+
 			const oneRaceResponse = await fetch(process.env.REACT_APP_API_URL + '/api/v1/races/' + raceId, {
 				credentials: 'include',
 				method: 'GET',
@@ -186,19 +188,19 @@ class RaceContainer extends Component {
     	})
   	}
 
-  	//be able to update the edited race
+  	//be able to update race with a runner
   	//UPDATE race
   	//get the id of the current race
   	//PUT
-  	updateRace = async (newRace) => {
+  	updateRaceWithRunner = async (raceId) => {
 
     	try {
+    		console.log('raceId >>>> ',raceId);
     		const updateRaceResponse = await fetch(
-      			process.env.REACT_APP_API_URL + "/api/v1/races/admin/" + this.state.idOfRace, 
+      			process.env.REACT_APP_API_URL + "/api/v1/races/" + raceId, 
       			{
       				credentials: 'include',
         			method: 'PUT',
-        			body: JSON.stringify(newRace), 
         			headers: {
           				'Content-Type': 'application/json'
         			}
@@ -207,22 +209,25 @@ class RaceContainer extends Component {
 
     		const updatedRaceJson = await updateRaceResponse.json()
 
+    		console.log("updatedRaceJson >>> ", updatedRaceJson);
+
     		if(updateRaceResponse.status === 200) {
         
-    			const newArrayWithUpdatedRace = this.state.races.map((race) => {
+    			// const newArrayWithUpdatedRace = this.state.races.map((race) => {
           			
-          			if(race._id === this.state.idOfRace) {
-            			return updatedRaceJson.data
-          			} else {
-            			return race
-          			}
-        		})
+       //    			if(race._id === this.state.idOfRace) {
+       //      			return updatedRaceJson.data
+       //    			} else {
+       //      			return race
+       //    			}
+       //  		})
+
+       			
+       			console.log(updatedRaceJson.data.runners);
 
         		this.setState({
-          			races: newArrayWithUpdatedRace
+          			races: updatedRaceJson.data
         		})
-
-            	this.closeEditModal()
 
         	}
 
@@ -267,16 +272,68 @@ class RaceContainer extends Component {
 
 	//if the user's name isn't already in the runner's array
 	//then push the user's name into the array on the sign up click
-	signUpForRace = () => {
-		const races = this.state.races
+	// signUpForRace = () => {
+	// 	const races = this.state.races
 
-		for(let i = 0; i < races.length; i++) {
-			console.log(races[i]);
-			for(let j = 0; j < races[i].runners.length; j++) {
-				console.log(races[i].runners[j]);
-			}
-		}
-	}
+	// 	for(let i = 0; i < races.length; i++) {
+	// 		console.log(races[i]);
+	// 		for(let j = 0; j < races[i].runners.length; j++) {
+	// 			console.log(races[i].runners[j]);
+	// 		}
+	// 	}
+	// }
+
+
+	//be able to update the edited race
+  	//UPDATE race
+  	//get the id of the current race
+  	//PUT
+	updateRace = async (raceId) => {
+
+    	try {
+    		console.log('this is the race id ',raceId);
+    		const updateRaceResponse = await fetch(
+      			process.env.REACT_APP_API_URL + "/api/v1/races/admin/" + raceId, 
+      			{
+      				credentials: 'include',
+        			method: 'PUT',
+        			body: JSON.stringify(raceId), 
+        			headers: {
+          				'Content-Type': 'application/json'
+        			}
+      			}
+    		)
+
+    		const updatedRaceJson = await updateRaceResponse.json()
+
+    		console.log("this is the updatedRaceJson ", updatedRaceJson);
+
+    		if(updateRaceResponse.status === 200) {
+        
+    			const newArrayWithUpdatedRace = this.state.races.map((race) => {
+          			
+          			if(race._id === this.state.idOfRace) {
+            			return updatedRaceJson.data
+          			} else {
+            			return race
+          			}
+        		})
+
+        		this.setState({
+          			races: updatedRaceJson.data
+        		})
+
+            	this.closeEditModal()
+
+        	}
+
+    	} catch(err) {
+    		console.log(err)
+    	}
+    }
+
+
+
 
 
 
@@ -284,9 +341,12 @@ class RaceContainer extends Component {
 	render() {
 		const { path, url } = this.props.match;
 
+		console.log('this is the state of races in RaceContainer');
 		console.log(this.state.races);
+		console.log('this is the loggedInUserId in RaceContainer');
+		console.log(this.state.loggedInUserId);
 		//console.log(this.state.trainingOpen);
-		console.log(this.state);
+		//console.log(this.state);
 		
 
 		return(
@@ -305,7 +365,10 @@ class RaceContainer extends Component {
 		            <RaceIndex 
 		            	races={this.state.races} 
 		            	idOfRace={this.state.idOfRace} 
-		            	signUpForRace={this.signUpForRace} />
+		            	signUpForRace={this.signUpForRace} 
+		            	loggedInUserId={this.state.loggedInUserId}
+		            	updateRaceWithRunner={this.updateRaceWithRunner} 
+		            	updateRace={this.updateRace} />
 		            {
           				this.state.idOfRace !== -1 
           				? 

@@ -137,7 +137,7 @@ class App extends Component {
 
   render() {
 
-    console.log("state in render method in app.js >> ", this.state);
+    //console.log("state in render method in app.js >> ", this.state);
 
     return (
       <div className="App">
