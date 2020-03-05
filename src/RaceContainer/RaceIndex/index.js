@@ -11,13 +11,29 @@ function RaceIndex(props) {
 	console.log(props.races)
 	//console.log(race)
 	console.log(id)
-	console.log(name);
+
+	for(let i = 0; i < props.races.length; i++) {
+		if(props.races[i]._id === id) {
+
+			// for(let j = 0; j < props.races[i].runners.length; j++) {
+			// 	const currentRunners = props.races[i].runners[j]
+				return (
+					<div>
+						<button>Sign up!</button>
+						<h1>{props.races[i].name}</h1>
+						<p>{props.races[i].distance}</p>
+						<p>{props.races[i].date}</p>
+						<p>{props.races[i].location}</p>
+						<h1>Runners</h1>
+					</div>
+				)
+			//}
+		}
+	}
+
 	return (
-		<div>
-			<h1>Race Index</h1>
-			<p> { id } </p>
-			<p> { name } </p>
-		</div>
+		<h1>RaceIndex</h1>
+
 	)
 }
 

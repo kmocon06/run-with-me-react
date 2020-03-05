@@ -22,7 +22,7 @@ function RaceList(props) {
 
       						<Table.Body>
       							<Table.Row>
-        							<Table.Cell><Link to={`/${race._id}`}>{race.name}here</Link></Table.Cell>
+        							<Table.Cell><Link to={`/${race._id}`}>{race.name}</Link></Table.Cell>
         							<Table.Cell>{race.distance}</Table.Cell>
         							<Table.Cell>{race.date}</Table.Cell>
         							<Table.Cell>{race.location}</Table.Cell>

@@ -157,6 +157,19 @@ class RaceContainer extends Component {
 		})
 	}
 
+	//if the user's name isn't already in the runner's array
+	//then push the user's name into the array on the sign up click
+	signUpForRace = () => {
+		const races = this.state.races
+
+		for(let i = 0; i < races.length; i++) {
+			console.log(races[i]);
+			for(let j = 0; j < races[i].runners.length; j++) {
+				console.log(races[i].runners[j]);
+			}
+		}
+	}
+
 
 	render() {
 		const { path, url } = this.props.match;
@@ -179,7 +192,10 @@ class RaceContainer extends Component {
 			<Switch>
 
 				<Route path={`/:id`}>
-		            <RaceIndex races={this.state.races} idOfRace={this.state.idOfRace} />
+		            <RaceIndex 
+		            races={this.state.races} 
+		            idOfRace={this.state.idOfRace} 
+		            signUpForRace={this.signUpForRace} />
 		        </Route>
 
 				<Route path={path}>
