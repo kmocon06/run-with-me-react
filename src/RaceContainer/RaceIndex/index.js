@@ -12,11 +12,16 @@ function RaceIndex(props) {
 	//console.log(race)
 	console.log(id)
 
+	//if the current id of the race is the same as the race id
+	//and the admin of the race is the current user,
+	//then we should be able to edit/update, and delete that race
 	for(let i = 0; i < props.races.length; i++) {
 		if(props.races[i]._id === id) {
 
-			// for(let j = 0; j < props.races[i].runners.length; j++) {
-			// 	const currentRunners = props.races[i].runners[j]
+			 // for(let j = 0; j < props.races[i].runners.length; j++) {
+			 // 	const currentRunners = props.races[i].runners[j]
+			 // 	console.log(props.races[i].runners);
+			 // 	console.log(props.races[i].runners[j]);
 				return (
 					<div>
 						<button>Sign up!</button>
@@ -25,9 +30,10 @@ function RaceIndex(props) {
 						<p>{props.races[i].date}</p>
 						<p>{props.races[i].location}</p>
 						<h1>Runners</h1>
+
 					</div>
 				)
-			//}
+			// }
 		}
 	}
 

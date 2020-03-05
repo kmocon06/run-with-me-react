@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import RaceList from './RaceList'
 import NewRaceForm from './NewRaceForm'
 import RaceIndex from './RaceIndex'
+import EditRace from './EditRace'
 import { Button } from 'semantic-ui-react'
 import WorkoutContainer from '../WorkoutContainer'
 import {
@@ -21,9 +22,11 @@ class RaceContainer extends Component {
 		this.state = {
 			races: [],
 			newFormOpen: false,
-			indexOfRace: 0,
+			indexOfRace: -1,
 			trainingOpen: false,
 			loggedInUserId: this.props.loggedInUserId,
+			raceAdmin: null,
+			idOfRace: -1
 		}
 
 	}
@@ -38,6 +41,7 @@ class RaceContainer extends Component {
 		// 	match:match
 		// })
 		this.findRaces()
+		this.updateRace()
 	}
 
 	findRaces = async () => {
@@ -135,7 +139,103 @@ class RaceContainer extends Component {
 		}
 	}
 
+	//DESTROY race if user is the admin and created the race
+  	//DELETE /id
+	deleteRace = async (id) => {
+   		try {
 
+      		const deleteRaceResponse = await fetch(process.env.REACT_APP_API_URL + "/api/v1/races/" + id, {
+        		credentials: 'include',
+        		method: 'DELETE'
+      		})
+
+      		const deleteRaceJson = await deleteRaceResponse.json()
+
+      		if(deleteRaceJson.status === 200) {
+	    		const races = this.state.races
+	      		let indexOfRace = 0
+
+	    		for(let i = 0; i < races.length; i++) {
+
+	      			if(races[i]._id === id && this.state.loggedInUserId === races[i].admin) {
+	        			indexOfRace = i
+	      			}
+	      		}
+	    			races.splice(indexOfRace, 1)
+
+	      			this.setState({ 
+	      				races: races
+	      			})
+               
+      		} else {
+        			throw new Error("Unable to delete this race")
+        	}
+
+    	} catch(err) {
+      		console.error(err)
+    	}
+	}
+
+	//EDIT a race if the user logged in is the race admin
+	//GET /id
+	//need the id of race we want to edit
+	editRace = (idOfRace) => {
+
+    	this.setState({
+      		idOfRace: idOfRace
+    	})
+  	}
+
+  	//be able to update the edited race
+  	//UPDATE race
+  	//get the id of the current race
+  	//PUT
+  	updateRace = async (newRace) => {
+
+    	try {
+    		const updateRaceResponse = await fetch(
+      			process.env.REACT_APP_API_URL + "/api/v1/races/admin/" + this.state.idOfRace, 
+      			{
+      				credentials: 'include',
+        			method: 'PUT',
+        			body: JSON.stringify(newRace), 
+        			headers: {
+          				'Content-Type': 'application/json'
+        			}
+      			}
+    		)
+
+    		const updatedRaceJson = await updateRaceResponse.json()
+
+    		if(updateRaceResponse.status === 200) {
+        
+    			const newArrayWithUpdatedRace = this.state.races.map((race) => {
+          			
+          			if(race._id === this.state.idOfRace) {
+            			return updatedRaceJson.data
+          			} else {
+            			return race
+          			}
+        		})
+
+        		this.setState({
+          			races: newArrayWithUpdatedRace
+        		})
+
+            	this.closeEditModal()
+
+        	}
+
+    	} catch(err) {
+    		console.log(err)
+    	}
+    }
+
+	closeEditModal = () => {
+		this.setState({
+			idOfRace: -1
+		})
+	}
 
 	//open the new race form when button is clicked
 	newRaceFormOpen = () => {
@@ -157,6 +257,14 @@ class RaceContainer extends Component {
 		})
 	}
 
+	//if the name of the user who is logged in is not already in the
+			//array (if their index is -1), then they should be pushed
+			//into the array of runners
+			// if(oneRace.runners.indexOf(req.session.name) === -1) {
+			// 	oneRace.runners.push(req.session.name)
+			// 	oneRace.save()	
+			// }
+
 	//if the user's name isn't already in the runner's array
 	//then push the user's name into the array on the sign up click
 	signUpForRace = () => {
@@ -169,6 +277,8 @@ class RaceContainer extends Component {
 			}
 		}
 	}
+
+
 
 
 	render() {
@@ -193,9 +303,21 @@ class RaceContainer extends Component {
 
 				<Route path={`/:id`}>
 		            <RaceIndex 
-		            races={this.state.races} 
-		            idOfRace={this.state.idOfRace} 
-		            signUpForRace={this.signUpForRace} />
+		            	races={this.state.races} 
+		            	idOfRace={this.state.idOfRace} 
+		            	signUpForRace={this.signUpForRace} />
+		            {
+          				this.state.idOfRace !== -1 
+          				? 
+		         		<EditRace 
+		            		raceToEdit={this.state.races.find((race) => race._id === this.state.idOfRace)}
+		            		editRace={this.editRace}
+		            		updateRace={this.updateRace} 
+		            		closeEditModal={this.closeEditModal}
+		            	/>
+          				:
+          				null
+        	 		}
 		        </Route>
 
 				<Route path={path}>

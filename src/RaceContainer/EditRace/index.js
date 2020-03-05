@@ -33,6 +33,8 @@ class EditRace extends Component {
   	handleEditFormSubmit = (event) => {
     	event.preventDefault()
 
+    	this.props.updateRace(this.state)
+
   	}
 
 
@@ -42,7 +44,7 @@ class EditRace extends Component {
 
 	    return(
 	    	<div>
-	    	<Modal open={this.props.newRaceFormOpen} closeIcon={true} onClose={this.props.closeNewRaceForm}>
+	    	<Modal open={true} onClose={(e)=>{this.props.closeEditModal()}} closeIcon>
 	    		<Modal.Content>
 	    			<Header>
 	    				<h4>Edit this race:</h4>
