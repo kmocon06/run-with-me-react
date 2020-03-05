@@ -20,6 +20,7 @@ class WorkoutContainer extends Component {
 
 	componentDidMount() {
 		this.findUserWorkouts()
+		this.updateWorkout()
 	}
 
 	//get all workouts for user 
@@ -109,6 +110,51 @@ class WorkoutContainer extends Component {
     	})
   	}
 
+  	//be able to update the edited workout
+  	//UPDATE workout
+  	//get the id of the current workout
+  	//PUT
+  	updateWorkout = async (newWorkout) => {
+
+    	try {
+    		const updateWorkoutResponse = await fetch(
+      			process.env.REACT_APP_API_URL + "/api/v1/workouts/" + this.state.idOfWorkout, 
+      			{
+      				credentials: 'include',
+        			method: 'PUT',
+        			body: JSON.stringify(newWorkout), 
+        			headers: {
+          				'Content-Type': 'application/json'
+        			}
+      			}
+    		)
+
+    		const updatedWorkoutJson = await updateWorkoutResponse.json()
+
+    		if(updateWorkoutResponse.status === 200) {
+        
+    			const newArrayWithUpdatedWorkout = this.state.userWorkouts.map((workout) => {
+          			
+          			if(workout._id === this.state.idOfWorkout) {
+            			return updatedWorkoutJson.data
+          			} else {
+            			return workout
+          			}
+        		})
+
+        		this.setState({
+          			userWorkouts: newArrayWithUpdatedWorkout
+        		})
+
+            	this.closeEditModal()
+
+        	}
+
+    	} catch(err) {
+    		console.log(err)
+    	}
+    }
+
 	//DESTROY your workout
   	//DELETE /id
 	deleteWorkout = async (id) => {
@@ -167,6 +213,7 @@ class WorkoutContainer extends Component {
 				workoutToEdit={this.state.userWorkouts.find((workout) => workout._id === this.state.idOfWorkout)}
 				deleteWorkout={this.deleteWorkout}
 				editWorkout={this.editWorkout}
+				updateWorkout={this.updateWorkout}
 			/>
 			 {
           		this.state.idOfWorkout !== -1 
@@ -174,6 +221,8 @@ class WorkoutContainer extends Component {
           		<EditWorkout
           			workoutToEdit={this.state.userWorkouts.find((workout) => workout._id === this.state.idOfWorkout)}
                 	closeEditModal={this.closeEditModal}
+                	editWorkout={this.editWorkout}
+                	updateWorkout={this.updateWorkout}
           		/>
           		:
           		null

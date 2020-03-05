@@ -18,6 +18,7 @@ class EditWorkout extends Component {
   	}
 
   	componentDidMount() {
+
   		this.setState({
   			trainingFor: this.props.workoutToEdit.trainingFor,
   			weekNumber: this.props.workoutToEdit.weekNumber,
@@ -36,7 +37,7 @@ class EditWorkout extends Component {
   	handleEditWorkoutSubmit = (event) => {
     	event.preventDefault()
 
-    	this.props.editWorkout(this.state)
+    	this.props.updateWorkout(this.state)
   	}
 
 
