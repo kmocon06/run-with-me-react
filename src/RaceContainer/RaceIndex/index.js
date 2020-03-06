@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { Container } from 'semantic-ui-react'
 
 
 function RaceIndex(props) {
@@ -36,17 +37,20 @@ function RaceIndex(props) {
 			const buttons = race[0].admin == props.loggedInUserId ? <button onClick={()=> props.deleteRace(race[0]._id)}>Delete</button> : null
 	
 		return (
-			<div>
+			<React.Fragment>
+			<div className="ui raised very padded text container segment">
 				<button onClick={()=> props.updateRaceWithRunner(race[0]._id)}>Sign up!</button>
-					<h1>{race[0].name}</h1>
+					<h2 className="header">{race[0].name}</h2>
 					<p>{race[0].distance}</p>
 					<p>{race[0].date}</p>
 					<p>{race[0].location}</p>
-					<h1>Runners</h1>
+			</div>
+			<div className="ui raised very padded text container segment">
+					<h1 className="header">Runners</h1>
 					{runners}
 					{buttons}
 			</div>
-
+		</React.Fragment>
 		)
 	}
 	else {

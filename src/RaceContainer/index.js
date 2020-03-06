@@ -3,7 +3,7 @@ import RaceList from './RaceList'
 import NewRaceForm from './NewRaceForm'
 import RaceIndex from './RaceIndex'
 import EditRace from './EditRace'
-import { Button } from 'semantic-ui-react'
+import { Button, Header, Segment } from 'semantic-ui-react'
 import WorkoutContainer from '../WorkoutContainer'
 import {
   BrowserRouter as Router,
@@ -260,6 +260,13 @@ class RaceContainer extends Component {
 		})
 	}
 
+	closeTraining = () => {
+		this.setState({
+			trainingOpen: false
+		})
+	}
+
+
 	//if the name of the user who is logged in is not already in the
 			//array (if their index is -1), then they should be pushed
 			//into the array of runners
@@ -345,6 +352,7 @@ class RaceContainer extends Component {
 			<div className="RaceContainer">
 			    <Button onClick={this.props.logout}>Logout</Button>
 				<Button className="NewButton" onClick={this.newRaceFormOpen}>Add a Race</Button>
+				<Button className="RacesButton" onClick={this.closeTraining}><Link to="/">Races</Link></Button>
 				<Button className="TrainingButton" onClick={this.openTraining}>Training</Button>
 				{
 					this.state.trainingOpen
@@ -378,7 +386,15 @@ class RaceContainer extends Component {
 		        </Route>
 
 				<Route path={path}>
-					<RaceList races={this.state.races} />
+					<Segment inverted>
+						<Header as='h3' block textAlign="center" inverted color="white">
+    						Races You Can Sign Up For
+  						</Header>
+  					</Segment>
+					<RaceList races={this.state.races} 
+						createRace={this.createRace}
+						newRaceFormOpen={this.state.newRaceFormOpen} 
+						closeNewRaceForm={this.closeNewRaceForm} />
 					<NewRaceForm 
 						createRace={this.createRace}
 						newRaceFormOpen={this.state.newFormOpen}

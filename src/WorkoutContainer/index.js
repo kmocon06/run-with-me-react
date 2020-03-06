@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button } from 'semantic-ui-react'
+import { Header, Button, Segment } from 'semantic-ui-react'
 import WorkoutList from './WorkoutList'
 import NewWorkout from './NewWorkout'
 import EditWorkout from './EditWorkout'
@@ -14,13 +14,13 @@ class WorkoutContainer extends Component {
 			userWorkouts: [],
 			loggedInUserId: this.props.loggedInUserId,
 			newWorkoutModalOpen: false,	
-			idOfWorkout: -1
+			idOfWorkout: -1,
+			workoutCompleted: false
 		}
 	}
 
 	componentDidMount() {
 		this.findUserWorkouts()
-		this.updateWorkout()
 	}
 
 	//get all workouts for user 
@@ -204,17 +204,22 @@ class WorkoutContainer extends Component {
 
 		return (
 			<div className="WorkoutContainer">
-				<h1>WorkoutContainer</h1>
-			<Button className="NewButton" onClick={this.openNewWorkout}>Add a new Workout</Button>
-			<NewWorkout createWorkout={this.createWorkout}
-				newWorkoutModalOpen={this.state.newWorkoutModalOpen}
-				closeNewWorkout={this.closeNewWorkout} />
-			<WorkoutList userWorkouts={this.state.userWorkouts} 
-				workoutToEdit={this.state.userWorkouts.find((workout) => workout._id === this.state.idOfWorkout)}
-				deleteWorkout={this.deleteWorkout}
-				editWorkout={this.editWorkout}
-				updateWorkout={this.updateWorkout}
-			/>
+				<Segment inverted>
+				<Header as='h3' block textAlign="center" inverted color="white">
+    				All Your Workouts
+  				</Header>
+  				</Segment>
+				<Button className="NewButton" onClick={this.openNewWorkout}>Add a new Workout</Button>
+				<NewWorkout createWorkout={this.createWorkout}
+					newWorkoutModalOpen={this.state.newWorkoutModalOpen}
+					closeNewWorkout={this.closeNewWorkout} />
+				<WorkoutList userWorkouts={this.state.userWorkouts} 
+					workoutToEdit={this.state.userWorkouts.find((workout) => workout._id === this.state.idOfWorkout)}
+					deleteWorkout={this.deleteWorkout}
+					editWorkout={this.editWorkout}
+					updateWorkout={this.updateWorkout}
+					workoutCompleted={this.state.workoutCompleted}
+				/>
 			 {
           		this.state.idOfWorkout !== -1 
           		? 

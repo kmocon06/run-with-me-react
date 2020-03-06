@@ -143,7 +143,9 @@ class App extends Component {
 
     return (
       <div className="App" style={{backgroundImage: `url(${Background})` }}>
-        <img src={Logo} alt="WebsiteLogo" />
+        <div className="Logo">
+          <img src={Logo} alt="WebsiteLogo" />
+        </div>
 
         <Switch>
 
