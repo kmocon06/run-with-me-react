@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom'
 
 function WorkoutList(props) {
 
+  //style={{ textDecoration: props.workoutCompleted == undefined ? 'visible': 'line-through'}}
   	const userWorkouts = props.userWorkouts.map((workout) => {
 
         return( 
-        	<Table.Row key={workout.id} style={{ textDecoration: props.workoutCompleted == undefined ? 'visible': 'line-through'}}>
+        	<Table.Row key={workout.id} >
           	   <Table.Cell>{workout.trainingFor}</Table.Cell>
           	   <Table.Cell>{workout.weekNumber}</Table.Cell>
           	   <Table.Cell>{workout.dayOfTheWeek}</Table.Cell>

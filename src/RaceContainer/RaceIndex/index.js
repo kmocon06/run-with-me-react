@@ -19,8 +19,6 @@ function RaceIndex(props) {
 	// if race.length<1 , display a "this race doesn't exist" message and a Link to race list
 
 	if(race.length>0) {
-		console.log("########", props.idOfRace);
-			console.log('runners in a race', race[0].runners);
 
 			const runners = race[0].runners.map((runner)=>{
 			//if(race[0].runners[0].length >= 0) {
@@ -39,6 +37,7 @@ function RaceIndex(props) {
 		return (
 			<React.Fragment>
 			<div className="ui raised very padded text container segment">
+					{buttons}
 				<button onClick={()=> props.updateRaceWithRunner(race[0]._id)}>Sign up!</button>
 					<h2 className="header">{race[0].name}</h2>
 					<p>{race[0].distance}</p>
@@ -48,7 +47,6 @@ function RaceIndex(props) {
 			<div className="ui raised very padded text container segment">
 					<h1 className="header">Runners</h1>
 					{runners}
-					{buttons}
 			</div>
 		</React.Fragment>
 		)
