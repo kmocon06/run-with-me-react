@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+
 
 function RaceIndex(props) {
 	let { id, name } = useParams();
@@ -14,58 +15,48 @@ function RaceIndex(props) {
 
 	// find the right race using the race._id in props
 	const race = props.races.filter(race => race._id === id)
+	// if race.length<1 , display a "this race doesn't exist" message and a Link to race list
 
-	console.log(race);
+	if(race.length>0) {
+		console.log("########", props.idOfRace);
+			console.log('runners in a race', race[0].runners);
 
+			const runners = race[0].runners.map((runner)=>{
+			//if(race[0].runners[0].length >= 0) {
 
+				return(
+					<div>
+					<p> Name: {runner.name} </p>
+					<p> Hometown: {runner.hometown} </p>
+					</div>
+					)
+			//}
+			})
 
-	const runners = race[0].runners.map((runner)=>{
-		return(
+			const buttons = race[0].admin == props.loggedInUserId ? <button onClick={()=> props.deleteRace(race[0]._id)}>Delete</button> : null
+	
+		return (
 			<div>
-			<p> Name: {runner.name} </p>
-			<p> Hometown: {runner.hometown} </p>
+				<button onClick={()=> props.updateRaceWithRunner(race[0]._id)}>Sign up!</button>
+					<h1>{race[0].name}</h1>
+					<p>{race[0].distance}</p>
+					<p>{race[0].date}</p>
+					<p>{race[0].location}</p>
+					<h1>Runners</h1>
+					{runners}
+					{buttons}
 			</div>
-			)
-	})
 
-	const buttons = race[0].admin == props.loggedInUserId ? <button>Delete</button> : null;
-	// for(let i = 0; i < props.races.length; i++) {
-	// 	if(props.races[i]._id === id) {
-
-
-
-	// 		 for(let j = 0; j < props.races[i].runners.length; j++) {
-	// 		 	const currentRunners = props.races[i].runners[j]
-
-	// 			return (
-	// 				<div>
-	// 					<h1>{props.races[i].name}</h1>
-	// 					<p>{props.races[i].distance}</p>
-	// 					<p>{props.races[i].date}</p>
-	// 					<p>{props.races[i].location}</p>
-						
-						
-	// 					<h1>Runners</h1>
-	// 					<p>{props.races[i].runners[j].name}</p>
-	// 				</div>
-	// 			)
-	// 		}
-	// 	}
-	// }
-
-	return (
-		<div>
-			<button onClick={()=> props.updateRaceWithRunner(race[0]._id)}>Sign up!</button>
-				{buttons}
-				<h1>{race[0].name}</h1>
-				<p>{race[0].distance}</p>
-				<p>{race[0].date}</p>
-				<p>{race[0].location}</p>
-				<h1>Runners</h1>
-				{runners}
-		</div>
-
-	)
+		)
+	}
+	else {
+		return (
+			<div>
+				<h1>Your race has been removed!</h1>
+				<Link to="/">Back to Home</Link>
+			</div>
+		)
+	}
 }
 
 

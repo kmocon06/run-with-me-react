@@ -65,48 +65,48 @@ class RaceContainer extends Component {
 	//get one race
 	//GET /races/:id
 	//get once race with the id
-	findOneRace = async (raceId) => {
-		try {
+	// findOneRace = async (raceId) => {
+	// 	try {
 
 
-			const oneRaceResponse = await fetch(process.env.REACT_APP_API_URL + '/api/v1/races/' + raceId, {
-				credentials: 'include',
-				method: 'GET',
-    			body: JSON.stringify(raceId), 
-    			headers: {
-        			'Content-Type': 'application/json'
-        		}
-			})
+	// 		const oneRaceResponse = await fetch(process.env.REACT_APP_API_URL + '/api/v1/races/' + raceId, {
+	// 			credentials: 'include',
+	// 			method: 'GET',
+ //    			body: JSON.stringify(raceId), 
+ //    			headers: {
+ //        			'Content-Type': 'application/json'
+ //        		}
+	// 		})
 
-			console.log('this is oneRaceResponse')
-			console.log(oneRaceResponse)
-			const oneRaceJson = await oneRaceResponse.json()
+	// 		console.log('this is oneRaceResponse')
+	// 		console.log(oneRaceResponse)
+	// 		const oneRaceJson = await oneRaceResponse.json()
 
-			if(oneRaceJson.status === 200) {
-	    		const races = this.state.races
-	      		let indexOfRace = 0
+	// 		if(oneRaceJson.status === 200) {
+	//     		const races = this.state.races
+	//       		let indexOfRace = 0
 
-	    		for(let i = 0; i < races.length; i++) {
+	//     		for(let i = 0; i < races.length; i++) {
 
-	      			if(races[i]._id === raceId) {
-	        			indexOfRace = i
-	      			}
+	//       			if(races[i]._id === raceId) {
+	//         			indexOfRace = i
+	//       			}
 
-					this.setState({
-						indexOfRace: indexOfRace
-					})
-	      		}
-	      	}
+	// 				this.setState({
+	// 					indexOfRace: indexOfRace
+	// 				})
+	//       		}
+	//       	}
 
-				console.log('this is oneRaceJson');
-				console.log(oneRaceJson)
-				console.log(raceId);
+	// 			console.log('this is oneRaceJson');
+	// 			console.log(oneRaceJson)
+	// 			console.log(raceId);
 
 
-		} catch(err) {
-			console.log(err)
-		}
-	}
+	// 	} catch(err) {
+	// 		console.log(err)
+	// 	}
+	// }
 
 
 	//CREATE 
@@ -195,7 +195,7 @@ class RaceContainer extends Component {
   	updateRaceWithRunner = async (raceId) => {
 
     	try {
-    		console.log('raceId >>>> ',raceId);
+    		// console.log('raceId >>>> ',raceId);
     		const updateRaceResponse = await fetch(
       			process.env.REACT_APP_API_URL + "/api/v1/races/" + raceId, 
       			{
@@ -223,11 +223,9 @@ class RaceContainer extends Component {
        //  		})
 
        			
-       			console.log(updatedRaceJson.data.runners);
+       			console.log("!!!!!!!!!!!!!!", updatedRaceJson.data.runners);
 
-        		this.setState({
-          			races: updatedRaceJson.data
-        		})
+        		this.findRaces()
 
         	}
 
@@ -332,12 +330,6 @@ class RaceContainer extends Component {
     	}
     }
 
-
-
-
-
-
-
 	render() {
 		const { path, url } = this.props.match;
 
@@ -367,8 +359,10 @@ class RaceContainer extends Component {
 		            	idOfRace={this.state.idOfRace} 
 		            	signUpForRace={this.signUpForRace} 
 		            	loggedInUserId={this.state.loggedInUserId}
+		            	deleteRace={this.deleteRace}
 		            	updateRaceWithRunner={this.updateRaceWithRunner} 
-		            	updateRace={this.updateRace} />
+		            	updateRace={this.updateRace}
+		            	 />
 		            {
           				this.state.idOfRace !== -1 
           				? 

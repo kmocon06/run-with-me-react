@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Form, Label, Button, Grid, Message } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import { Icon, Link } from 'react-router-dom'
 
 const sizes = ["small"]
 
@@ -39,7 +39,7 @@ class Login extends Component {
 				<Grid.Column style={{maxWidth: 450}}>
 				<Form onSubmit={this.handleLoginSubmit} size={sizes} key={sizes}>
 					<Form.Field>
-					<Label>Email:</Label>
+					<Label><i class="mail icon"></i>Email:</Label>
 					<Form.Input
 						inline
 						type="text"
@@ -51,7 +51,7 @@ class Login extends Component {
 					/>
 					</Form.Field>
 					<Form.Field>
-					<Label>Password:</Label>
+					<Label><i class="lock basic icon"></i>Password:</Label>
 					<Form.Input
 						inline
 						type="password"

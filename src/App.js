@@ -15,6 +15,8 @@ import Login from './Login'
 import RaceContainer from './RaceContainer'
 //import RaceIndex from '../RaceIndex.js'
 import { Message, Button } from 'semantic-ui-react'
+import Logo from './logo.png'
+import Background from './background2.jpg'
 
 class App extends Component {
   constructor(props){
@@ -140,9 +142,8 @@ class App extends Component {
     //console.log("state in render method in app.js >> ", this.state);
 
     return (
-      <div className="App">
-      <h1>Running App</h1>
-      
+      <div className="App" style={{backgroundImage: `url(${Background})` }}>
+        <img src={Logo} alt="WebsiteLogo" />
 
         <Switch>
 
@@ -168,7 +169,7 @@ class App extends Component {
             { 
               this.state.loggedIn 
               ? 
-              <RaceContainer logout={this.logout} loggedInUserId={this.state.loggedInUserId}/> 
+              <RaceContainer logout={this.logout} loggedInUserId={this.state.loggedInUserId} /> 
               : 
               <Redirect 
                 to={{
@@ -180,7 +181,6 @@ class App extends Component {
 
         </Switch>
 
-      
     </div>
     );
   }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Label, Button, Grid, Message } from 'semantic-ui-react'
+import { Icon, Form, Label, Button, Grid, Message } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 const sizes = ["small"]
@@ -47,10 +47,10 @@ class Register extends Component {
 
 			{sizes.map((size) => (
 				<Grid textAlign="center">
-				<Grid.Column style={{maxWidth: 450}}>
+				<Grid.Column style={{maxWidth: 500}}>
 				<Form onSubmit={this.handleRegisterSubmit} size={sizes} key={sizes}>
 					<Form.Field>
-					<Label>Name:</Label>
+					<Label><i class="user basic icon"></i>Name:</Label>
 					<Form.Input
 						inline
 						type="text"
@@ -97,7 +97,7 @@ class Register extends Component {
 					/>
 					</Form.Field>
 					<Form.Field>
-					<Label>Email:</Label>
+					<Label><i class="mail icon"></i>Email:</Label>
 					<Form.Input
 						inline
 						type="text"
@@ -109,7 +109,7 @@ class Register extends Component {
 					/>
 					</Form.Field>
 					<Form.Field>
-					<Label>Password:</Label>
+					<Label><i class="lock basic icon"></i>Password:</Label>
 					<Form.Input
 						inline
 						type="password"
